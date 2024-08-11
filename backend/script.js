@@ -1,11 +1,12 @@
 const mysql = require('mysql2');
+require('dotenv').config();
 
 // Create a connection to the database
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',          // replace with your MySQL username
-  password: 'Abhi1234',          // replace with your MySQL password
-  database: 'tuf' // replace with your database name
+  host:process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
 // Connect to the database
@@ -27,8 +28,8 @@ const data = [
 ];
 
 // Insert data into the database
-data.forEach(item => {
-  const query = 'INSERT INTO question (question, answer) VALUES (?, ?)';
+data.forEach(item => {  
+  const query = 'INSERT INTO Question (question, answer) VALUES (?, ?)';
   connection.query(query, [item.question, item.answer], (err, results) => {
     if (err) {
       console.error('Error inserting data:', err.stack);

@@ -8,7 +8,7 @@ export default function Dashboard() {
     const [isEditing,setIsEditing] = useState(false);
     const [formData,setFormData] = useState({question:"",answer:""});
     const fetchData = async ()=>{
-        const response = await axios.get('http://localhost:3000/questions');
+        const response = await axios.get('https://flashcard-mxsa.onrender.com/questions');
         setQuestions(response.data);
       }
     useEffect(()=>{
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     const handleDelete = async (id) => {
         try {
-          await axios.delete(`http://localhost:3000/questions/${id}`);
+          await axios.delete(`https://flashcard-mxsa.onrender.com/questions/${id}`);
           fetchData(); 
         } catch (error) {
           console.error('Error deleting question:', error);
@@ -26,7 +26,7 @@ export default function Dashboard() {
     const handleSubmit = async function(e){
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/questions',formData);
+            const response = await axios.post('https://flashcard-mxsa.onrender.com/questions',formData);
             setFormData({question:"",answer:""})
             fetchData();
         } catch (error) {
@@ -42,7 +42,7 @@ export default function Dashboard() {
         e.preventDefault();
         try {
             // console.log(formData);
-            const response = await axios.put(`http://localhost:3000/questions/${formData.id}`,formData);
+            const response = await axios.put(`https://flashcard-mxsa.onrender.com/${formData.id}`,formData);
             setFormData({question:"",answer:""})
             setIsEditing(false);
             fetchData();

@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,10 +13,10 @@ app.use(cors({
 }))
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Abhi1234',
-    database: 'tuf'
+    host:process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 })
 
 db.connect((err) => {
@@ -38,7 +39,7 @@ app.get("/questions",(req,res)=>{
 
 app.post('/questions', (req, res) => {
     const { question, answer } = req.body;
-    db.query('INSERT INTO question (question, answer) VALUES (?, ?)', [question, answer], (err, result) => {
+    db.query('INSERT INTO Question (question, answer) VALUES (?, ?)', [question, answer], (err, result) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
@@ -50,7 +51,7 @@ app.post('/questions', (req, res) => {
     const questionId = req.params.id;
     const { question, answer } = req.body;
     db.query(
-      'UPDATE question SET question = ?, answer = ? WHERE id = ?',
+      'UPDATE question SET Question = ?, answer = ? WHERE id = ?',
       [question, answer, questionId],
       (err) => {
         if (err) {
@@ -63,7 +64,7 @@ app.post('/questions', (req, res) => {
 
   app.delete('/questions/:id', (req, res) => {
     const questionId = req.params.id;
-    db.query('DELETE FROM question WHERE id = ?', [questionId], (err) => {
+    db.query('DELETE FROM Question WHERE id = ?', [questionId], (err) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }

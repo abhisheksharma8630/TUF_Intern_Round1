@@ -10,7 +10,7 @@ function App() {
   const [questions,setQuestions] = useState([{id:1,question:"How are you?",answer:"I'm fine"}]);
   useEffect(()=>{
     const fetchData = async ()=>{
-      const response = await axios.get('http://localhost:3000/questions');
+      const response = await axios.get('https://flashcard-mxsa.onrender.com/questions');
       setQuestions(response.data);
     }
     fetchData();
