@@ -42,7 +42,7 @@ export default function Dashboard() {
         e.preventDefault();
         try {
             // console.log(formData);
-            const response = await axios.put(`https://flashcard-mxsa.onrender.com/${formData.id}`,formData);
+            const response = await axios.put(`https://flashcard-mxsa.onrender.com/questions/${formData.id}`,formData);
             setFormData({question:"",answer:""})
             setIsEditing(false);
             fetchData();
