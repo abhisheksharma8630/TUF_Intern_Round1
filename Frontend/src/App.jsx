@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Navbar from './Navbar';
+import ContactPage from './ContactPage';
 
 function App() {
   const [questions,setQuestions] = useState([{id:1,question:"How are you?",answer:"I'm fine"}]);
@@ -22,6 +23,7 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/contact' element={<ContactPage/>}/>
         <Route path='/' element={<FlashcardCarousel questions={questions}/>}/>
       </Routes>
     </div>

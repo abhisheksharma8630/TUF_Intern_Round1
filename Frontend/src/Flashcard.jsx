@@ -14,10 +14,16 @@ const Flashcard = ({ question, answer, flippable }) => {
     <div style={{cursor:"pointer"}} className={`flashcard-container ${isFlipped ? 'flipped' : ''}`} onClick={handleCardClick}>
       <div className="flashcard">
         <div className="front">
-          <div className="flashcard-question">{question}</div>
+          < div className="flashcard-question">
+          <h3>Question</h3>
+            <p>{question}</p>
+          </div>
         </div>
         <div className="back">
-          <div className="flashcard-answer">{answer}</div>
+          <div className="flashcard-answer">
+          <h3>Answer</h3>
+          <p>{answer}</p>
+          </div>
         </div>
       </div>
     </div>
