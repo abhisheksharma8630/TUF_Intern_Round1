@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: '*',
   methods: 'GET,POST,PUT,DELETE',
   allowedHeaders: 'Content-Type,Authorization'
 }))
@@ -16,8 +16,18 @@ const db = mysql.createConnection({
     host:process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    enableKeepAlive:true,
 })
+
+// const pool = mysql.createPool({
+//   host:process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
+//   keepAliveInitialDelay: 10000,
+//   enableKeepAlive: true,
+// })
 
 db.connect((err) => {
     if (err) {
@@ -28,7 +38,7 @@ db.connect((err) => {
   });
   
 
-app.get("/questions",(req,res)=>{
+app.get("/questions",async (req,res)=>{
     db.query('SELECT * FROM Question order by created_at desc;',(err,results,fields)=>{
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -37,7 +47,7 @@ app.get("/questions",(req,res)=>{
     })
 })
 
-app.post('/questions', (req, res) => {
+app.post('/questions', async (req, res) => {
     const { question, answer } = req.body;
     db.query('INSERT INTO Question (question, answer) VALUES (?, ?)', [question, answer], (err, result) => {
       if (err) {
@@ -47,11 +57,11 @@ app.post('/questions', (req, res) => {
     });
   });
   
-  app.put('/questions/:id', (req, res) => {
+  app.put('/questions/:id', async (req, res) => {
     const questionId = req.params.id;
     const { question, answer } = req.body;
     db.query(
-      'UPDATE question SET Question = ?, answer = ? WHERE id = ?',
+      'UPDATE Question SET question = ?, answer = ? WHERE id = ?',
       [question, answer, questionId],
       (err) => {
         if (err) {
@@ -62,7 +72,7 @@ app.post('/questions', (req, res) => {
     );
   });
 
-  app.delete('/questions/:id', (req, res) => {
+  app.delete('/questions/:id', async (req, res) => {
     const questionId = req.params.id;
     db.query('DELETE FROM Question WHERE id = ?', [questionId], (err) => {
       if (err) {
